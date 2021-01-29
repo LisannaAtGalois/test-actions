@@ -6,15 +6,22 @@ on:
     branches: [main]
 
 jobs:
-  build:
+  job1:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
-        ghc: ["8.6.5", "8.8.4", "8.10.2"]
-    runs-on: ${{ matrix.os }}
-    name: Test - v${{ matrix.ghc }} - ${{ matrix.os }}
-    continue-on-error: "${{ matrix.ghc == '8.6.5' || matrix.ghc == '8.8.4' || matrix.ghc == '8.10.2' }}"
+        include:
+          - cmd: false
+            continue-on-error: true
+          - cmd: true
+            continue-on-error: false
+    runs-on: ubuntu-latest
+    name: Test - ${{ matrix.cmd }}
+    continue-on-error: "${{ matrix.continue-on-error }}"
     steps:
-      - run: |
-          exit 1
+      - run: ${{ matrix.cmd }}
+  job2:
+    needs: job1
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ${{ needs.job1.result }}
