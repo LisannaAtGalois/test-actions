@@ -18,6 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     name: Test - ${{ matrix.cmd }}
     continue-on-error: "${{ matrix.continue-on-error }}"
+    if: false
     steps:
       - run: ${{ matrix.cmd }}
   job2:
