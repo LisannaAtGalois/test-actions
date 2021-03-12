@@ -8,7 +8,12 @@ on:
 jobs:
   job1:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ghc: ["8.10.3", "8.8.4", "8.6.5"]
     steps:
       - uses: haskell/actions/setup@v1
-      - run: cabal v2-install cabal-plan
+        with:
+          ghc-version: ${{ matrix.ghc }}
+      - run: cabal v2-update && cabal v2-install cabal-plan
       - run: cabal-plan -h
