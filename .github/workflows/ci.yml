@@ -15,5 +15,4 @@ jobs:
       - uses: haskell/actions/setup@v1
         with:
           ghc-version: ${{ matrix.ghc }}
-      - run: cabal v2-update && cabal v2-install cabal-plan
-      - run: cabal-plan -h
+      - run: cabal v2-update && cabal list-bin cabal-plan
