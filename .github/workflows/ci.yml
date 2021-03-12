@@ -7,22 +7,8 @@ on:
 
 jobs:
   job1:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - cmd: false
-            continue-on-error: true
-          - cmd: true
-            continue-on-error: false
-    runs-on: ubuntu-latest
-    name: Test - ${{ matrix.cmd }}
-    continue-on-error: "${{ matrix.continue-on-error }}"
-    if: false
-    steps:
-      - run: ${{ matrix.cmd }}
-  job2:
-    needs: job1
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{ needs.job1.result }}
+      - uses: haskell/actions/setup@v1
+      - run: cabal v2-install cabal-plan
+      - run: cabal-plan -h
